@@ -1,27 +1,24 @@
 import pandas as pd
 import numpy as np
-import os
 
-data= pd.read_csv('smartphones.csv')
-data = data.dropna()
-data = data.drop_duplicates()
-data = data.reset_index(drop=True)
+# Load and clean data
+data = pd.read_csv('smartphones.csv')
+data = data.dropna().drop_duplicates().reset_index(drop=True)
 
+# Standardize brand names to lowercase
+data['brand_name'] = data['brand_name'].str.lower()
 
-#brand name
-brand_name= data['brand_name'].str.lower()
-brand_name= brand_name.drop_duplicates()
-brand_name= brand_name.reset_index(drop=True)
-brand_name= brand_name.dropna()
+# Get unique brand names
+brand_names = data['brand_name'].drop_duplicates().reset_index(drop=True)
+print("Available brands:\n", brand_names)
 
-print(brand_name)
-company_name= input("Enter the company name: ")
+# Input first brand from user
+first_company_name = input("Enter the first company name: ").lower()
 
-#model name
-model_name= data[(data['brand_name']==company_name)]
-model_name= model_name.drop_duplicates()
-model_name= model_name.reset_index(drop=True)
-model_name= model_name.dropna()
-
-print(model_name)
+# Filter models by brand
+if first_company_name in brand_names.values:
+    model_data = data[data['brand_name'] == first_company_name].reset_index(drop=True)
+    print("Available models from", first_company_name, ":\n", model_data['model'])
+else:
+    print("Brand not found. Please check your input.")
 
