@@ -1,1 +1,1 @@
-BERT is amazing
+print(brand_name)
